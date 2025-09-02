@@ -32,7 +32,7 @@ export default defineConfig({
   plugins: [
     PLUGINS
   ],
-  base: PUBLIC_PATH,
+  base: '/',
   build: {
     outDir: 'dist'
   },
