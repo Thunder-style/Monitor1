@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { ScatterChart, Scatter, XAxis, YAxis, ZAxis, Tooltip, ResponsiveContainer, Cell } from 'recharts';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { useNavigate } from 'react-router-dom';
@@ -50,12 +49,12 @@ const TalentFlowQuadrant = ({ selectedYear, onYearChange }) => {
     navigate(`/department/${departmentId}`);
   };
 
-  // 定义象限颜色
+  // 定义象限颜色 - 使用科技感配色
   const quadrantColors = [
-    '#10B981', // 高满意度低流动率 - 绿色
-    '#EF4444', // 低满意度低流动率 - 红色
-    '#F59E0B', // 低满意度高流动率 - 橙色
-    '#3B82F6'  // 高满意度高流动率 - 蓝色
+    '#47dae8', // 高满意度低流动率 - 青色
+    '#ef4444', // 低满意度低流动率 - 红色
+    '#f59e0b', // 低满意度高流动率 - 橙色
+    '#8b5cf6'  // 高满意度高流动率 - 紫色
   ];
 
   // 根据数据点位置确定象限颜色
@@ -70,10 +69,10 @@ const TalentFlowQuadrant = ({ selectedYear, onYearChange }) => {
     if (active && payload && payload.length) {
       const data = payload[0].payload;
       return (
-        <div className="bg-white p-4 border border-gray-200 shadow-lg rounded-md">
-          <p className="font-bold">{data.name}</p>
-          <p>人才流动率: {data.flowRate}%</p>
-          <p>满意度: {data.satisfaction}%</p>
+        <div className="bg-slate-900/90 border border-cyan-400/30 backdrop-blur-sm p-4 shadow-lg rounded-md">
+          <p className="font-bold text-cyan-100">{data.name}</p>
+          <p className="text-cyan-200/80">人才流动率: <span className="data-highlight">{data.flowRate}%</span></p>
+          <p className="text-cyan-200/80">满意度: <span className="data-highlight">{data.satisfaction}%</span></p>
         </div>
       );
     }
@@ -96,69 +95,68 @@ const TalentFlowQuadrant = ({ selectedYear, onYearChange }) => {
   };
 
   return (
-    <Card className="w-full">
-      <CardHeader className="flex flex-row items-center justify-between">
-        <CardTitle>组织活力分析</CardTitle>
-<div></div>
-      </CardHeader>
-      <CardContent>
-        <div className="h-96 relative">
-          <ResponsiveContainer width="100%" height="100%">
-            <ScatterChart
-              margin={{ top: 20, right: 20, bottom: 20, left: 20 }}
-            >
-              {/* 添加四个象限背景 */}
-              <rect x="50%" y="0" width="50%" height="50%" fill="#dbeafe" fillOpacity={0.3} />
-              <rect x="0" y="0" width="50%" height="50%" fill="#fef2f2" fillOpacity={0.3} />
-              <rect x="0" y="50%" width="50%" height="50%" fill="#fffbeb" fillOpacity={0.3} />
-              <rect x="50%" y="50%" width="50%" height="50%" fill="#dcfce7" fillOpacity={0.3} />
-              
-              <XAxis 
-                type="number" 
-                dataKey="flowRate" 
-                name="流动率" 
-                domain={[0, 100]}
-                label={{ value: '人才流动率 (%)', position: 'bottom', offset: 0 }}
-              />
-              <YAxis 
-                type="number" 
-                dataKey="satisfaction" 
-                name="满意度" 
-                domain={[0, 100]}
-                label={{ value: '满意度 (%)', angle: -90, position: 'insideLeft' }}
-              />
-              <ZAxis range={[100]} />
-              <Tooltip content={<CustomTooltip />} cursor={{ strokeDasharray: '3 3' }} />
-              <Scatter name="部门" data={departmentData} fill="#8884d8" shape={<CustomizedShape />}>
-                {departmentData.map((entry, index) => (
-                  <Cell 
-                    key={`cell-${index}`} 
-                    fill={getQuadrantColor(entry)} 
-                    onClick={() => handleClick(entry.id)}
-                    style={{ cursor: 'pointer' }}
-                  />
-                ))}
-              </Scatter>
-            </ScatterChart>
-          </ResponsiveContainer>
+    <div className="w-full">
+      <div className="h-96 relative">
+        <ResponsiveContainer width="100%" height="100%">
+          <ScatterChart
+            margin={{ top: 20, right: 20, bottom: 40, left: 40 }}
+          >
+            {/* 添加四个象限背景 - 使用暗色科技风格 */}
+            <rect x="50%" y="0" width="50%" height="50%" fill="rgba(139, 92, 246, 0.1)" fillOpacity={0.3} />
+            <rect x="0" y="0" width="50%" height="50%" fill="rgba(239, 68, 68, 0.1)" fillOpacity={0.3} />
+            <rect x="0" y="50%" width="50%" height="50%" fill="rgba(245, 158, 11, 0.1)" fillOpacity={0.3} />
+            <rect x="50%" y="50%" width="50%" height="50%" fill="rgba(71, 218, 232, 0.1)" fillOpacity={0.3} />
+            
+            <XAxis 
+              type="number" 
+              dataKey="flowRate" 
+              name="流动率" 
+              domain={[0, 100]}
+              label={{ value: '人才流动率 (%)', position: 'bottom', offset: -5, fill: '#bcdcff' }}
+              tick={{ fill: '#c0c9d2', fontSize: 12 }}
+              axisLine={{ stroke: '#47dae8', strokeWidth: 1 }}
+              tickLine={{ stroke: '#47dae8' }}
+            />
+            <YAxis 
+              type="number" 
+              dataKey="satisfaction" 
+              name="满意度" 
+              domain={[0, 100]}
+              label={{ value: '满意度 (%)', angle: -90, position: 'insideLeft', fill: '#bcdcff' }}
+              tick={{ fill: '#c0c9d2', fontSize: 12 }}
+              axisLine={{ stroke: '#47dae8', strokeWidth: 1 }}
+              tickLine={{ stroke: '#47dae8' }}
+            />
+            <ZAxis range={[100]} />
+            <Tooltip content={<CustomTooltip />} cursor={{ strokeDasharray: '3 3', stroke: '#47dae8' }} />
+            <Scatter name="部门" data={departmentData} fill="#47dae8" shape={<CustomizedShape />}>
+              {departmentData.map((entry, index) => (
+                <Cell 
+                  key={`cell-${index}`} 
+                  fill={getQuadrantColor(entry)} 
+                  onClick={() => handleClick(entry.id)}
+                  style={{ cursor: 'pointer' }}
+                />
+              ))}
+            </Scatter>
+          </ScatterChart>
+        </ResponsiveContainer>
+      </div>
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-4">
+        <div className="flex items-center">
+          <div className="w-4 h-4 mr-2 bg-green-500 rounded-sm glow-effect"></div>
+          <span className="text-cyan-200/80 text-sm">绩效结果A</span>
         </div>
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-4">
-          <div className="flex items-center">
-            <div className="w-4 h-4 mr-2 bg-emerald-500"></div>
-            <span className="">绩效结果A</span>
-          </div>
-          <div className="flex items-center">
-            <div className="w-4 h-4 mr-2 bg-amber-500"></div>
-            <span className="">绩效结果B+</span>
-          </div>
-          <div className="flex items-center">
-            <div className="w-4 h-4 mr-2 bg-red-700"></div>
-            <span className="">绩效结果B</span>
-          </div>
-<div></div>
+        <div className="flex items-center">
+          <div className="w-4 h-4 mr-2 bg-orange-500 rounded-sm glow-effect"></div>
+          <span className="text-cyan-200/80 text-sm">绩效结果B+</span>
         </div>
-      </CardContent>
-    </Card>
+        <div className="flex items-center">
+          <div className="w-4 h-4 mr-2 bg-red-400 rounded-sm glow-effect"></div>
+          <span className="text-cyan-200/80 text-sm">绩效结果B</span>
+        </div>
+      </div>
+    </div>
   );
 };
 

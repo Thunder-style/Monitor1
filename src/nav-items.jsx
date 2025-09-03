@@ -8,7 +8,7 @@ import Visualization from "./pages/Visualization.jsx";
 */
 export const navItems = [
 {
-    title: "Home",
+    title: "实时监控",
     to: "/",
     icon: <HomeIcon className="h-4 w-4" />,
     page: <Index />,
@@ -18,11 +18,13 @@ export const navItems = [
     to: "/department/:id",
     icon: <Users className="h-4 w-4" />,
     page: <DepartmentDetail />,
+    hideFromNav: true, // 这个路由不在导航栏中显示
 },
 {
     title: "数据可视化",
     to: "/visualization",
     icon: <BarChart3 className="h-4 w-4" />,
     page: <Visualization />,
+    hideFromNav: true, // 这个路由不在导航栏中显示
 },
 ];

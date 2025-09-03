@@ -8,6 +8,8 @@ import { ArrowLeft, Users, Calendar, TrendingUp, Briefcase, AlertTriangle, Build
 import { useNavigate } from 'react-router-dom';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import DashboardLayout from '@/components/ui/dashboard-layout';
+import GlowCard from '@/components/ui/glow-card';
 
 const DepartmentDetail = () => {
   const { id } = useParams();
@@ -183,176 +185,194 @@ const DepartmentDetail = () => {
   };
 
   return (
-    <div className="p-6">
-      <Button onClick={() => navigate(-1)} variant="outline" className="mb-6">
-        <ArrowLeft className="mr-2 h-4 w-4" /> 返回
-      </Button>
-      
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
-        {/* 部门基本信息卡片 */}
-        <Card>
-          <CardHeader>
-            <CardTitle className="flex items-center">
-              <Building className="mr-2 h-5 w-5" />
-              部门基本信息
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-3">
-            <div className="flex justify-between">
-              <span>部门名称:</span>
-              <span className="font-medium">{department.name}</span>
+    <DashboardLayout title={`${department.name} - 部门详情`}>
+      <div className="space-y-6">
+        <div className="flex items-center mb-6">
+          <Button 
+            onClick={() => navigate(-1)} 
+            variant="outline" 
+            className="bg-slate-900/60 border-cyan-400/30 text-cyan-100 hover:bg-cyan-400/10 hover:border-cyan-400/60"
+          >
+            <ArrowLeft className="mr-2 h-4 w-4" /> 返回
+          </Button>
+        </div>
+        
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+          {/* 部门基本信息卡片 */}
+          <GlowCard 
+            title="部门基本信息" 
+            icon={<Building className="w-5 h-5" />}
+            glowColor="#47dae8"
+          >
+            <div className="space-y-3">
+              <div className="flex justify-between">
+                <span className="text-cyan-200/80">部门名称:</span>
+                <span className="data-highlight">{department.name}</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-cyan-200/80">部门人数:</span>
+                <span className="data-highlight">{department.headcount}</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-cyan-200/80">人才流动率:</span>
+                <span className="data-highlight">{department.flowRate}%</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-cyan-200/80">满意度:</span>
+                <span className="data-highlight">{department.satisfaction}%</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-cyan-200/80">平均年龄:</span>
+                <span className="data-highlight">{department.averageAge}岁 (排名第{department.averageAgeRank})</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-cyan-200/80">年度晋升比例:</span>
+                <span className="data-highlight">{department.promotionRate}% (排名第{department.promotionRateRank})</span>
+              </div>
+              <div className="flex justify-between items-center">
+                <span className="text-cyan-200/80">工作负荷情况:</span>
+                <Badge 
+                  className={`${department.workload === '大' || department.workload === '较大' 
+                    ? 'bg-red-900/30 text-red-300 border-red-400/50' 
+                    : 'bg-green-900/30 text-green-300 border-green-400/50'
+                  } border`}
+                >
+                  {department.workload}
+                </Badge>
+              </div>
             </div>
-            <div className="flex justify-between">
-              <span>部门人数:</span>
-              <span className="font-medium">{department.headcount}</span>
-            </div>
-            <div className="flex justify-between">
-              <span>人才流动率:</span>
-              <span className="font-medium">{department.flowRate}%</span>
-            </div>
-            <div className="flex justify-between">
-              <span>满意度:</span>
-              <span className="font-medium">{department.satisfaction}%</span>
-            </div>
-            <div className="flex justify-between">
-              <span>平均年龄:</span>
-              <span className="font-medium">{department.averageAge}岁 (排名第{department.averageAgeRank})</span>
-            </div>
-            <div className="flex justify-between">
-              <span>年度晋升比例:</span>
-              <span className="font-medium">{department.promotionRate}% (排名第{department.promotionRateRank})</span>
-            </div>
-            <div className="flex justify-between">
-              <span>工作负荷情况:</span>
-              <Badge variant={department.workload === '大' || department.workload === '较大' ? 'destructive' : 'default'}>
-                {department.workload}
-              </Badge>
-            </div>
-          </CardContent>
-        </Card>
+          </GlowCard>
 
-        {/* AI分析建议卡片 */}
-        <Card className="md:col-span-2">
-          <CardHeader>
-            <CardTitle className="flex items-center">
-              <TrendingUp className="mr-2 h-5 w-5" />
-              AI分析建议
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
+          {/* AI分析建议卡片 */}
+          <GlowCard 
+            title="AI分析建议" 
+            icon={<TrendingUp className="w-5 h-5" />}
+            glowColor="#8b5cf6"
+            className="md:col-span-2"
+          >
             <ul className="list-disc pl-5 space-y-2">
               {aiSuggestions.map((suggestion, index) => (
-                <li key={index}>{suggestion}</li>
+                <li key={index} className="text-cyan-200/80">{suggestion}</li>
               ))}
             </ul>
-          </CardContent>
-        </Card>
-      </div>
+          </GlowCard>
+        </div>
 
-      {/* 人员流动详情卡片 */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center">
-            <Users className="mr-2 h-5 w-5" />
-            人员流动 & 借调详情
-          </CardTitle>
-        </CardHeader>
-        <CardContent>
+        {/* 人员流动详情卡片 */}
+        <GlowCard 
+          title="人员流动 & 借调详情" 
+          icon={<Users className="w-5 h-5" />}
+          glowColor="#22c55e"
+        >
           <Tabs defaultValue="flow" className="w-full">
-            <TabsList className="grid w-full grid-cols-2">
-              <TabsTrigger value="flow" className="flex items-center">
+            <TabsList className="grid w-full grid-cols-2 bg-slate-800/60 border border-cyan-400/30">
+              <TabsTrigger 
+                value="flow" 
+                className="flex items-center data-[state=active]:bg-cyan-400/20 data-[state=active]:text-cyan-300 text-cyan-100/80"
+              >
                 <UserPlus className="mr-2 h-4 w-4" />
                 流动人员 ({flowEmployees.length})
               </TabsTrigger>
-              <TabsTrigger value="borrow" className="flex items-center">
+              <TabsTrigger 
+                value="borrow" 
+                className="flex items-center data-[state=active]:bg-cyan-400/20 data-[state=active]:text-cyan-300 text-cyan-100/80"
+              >
                 <Users2 className="mr-2 h-4 w-4" />
                 被借用人员 ({borrowedEmployees.length})
               </TabsTrigger>
             </TabsList>
             <TabsContent value="flow" className="mt-4">
-              <div className="overflow-x-auto">
-                <Table>
-                  <TableHeader>
-                    <TableRow>
-                      <TableHead>姓名</TableHead>
-                      <TableHead>现状</TableHead>
-                      <TableHead>拟调情况</TableHead>
-                      <TableHead>调配类型</TableHead>
-                      <TableHead>执行时间</TableHead>
-                    </TableRow>
-                  </TableHeader>
-                  <TableBody>
+              <div className="overflow-x-auto custom-scrollbar">
+                <table className="w-full cyber-table">
+                  <thead>
+                    <tr>
+                      <th className="text-left py-3 px-4">姓名</th>
+                      <th className="text-left py-3 px-4">现状</th>
+                      <th className="text-left py-3 px-4">拟调情况</th>
+                      <th className="text-left py-3 px-4">调配类型</th>
+                      <th className="text-left py-3 px-4">执行时间</th>
+                    </tr>
+                  </thead>
+                  <tbody>
                     {flowEmployees.map((employee) => (
-                      <TableRow key={employee.id}>
-                        <TableCell className="font-medium">{employee.name}</TableCell>
-                        <TableCell>
+                      <tr key={employee.id}>
+                        <td className="py-3 px-4">
+                          <span className="data-highlight">{employee.name}</span>
+                        </td>
+                        <td className="py-3 px-4">
                           <div className="text-sm">
                             <div>部门: {employee.currentDepartment}</div>
                             <div>路径: {employee.departmentPath}</div>
                             <div>岗位: {employee.position}</div>
                             <div>层级: {employee.level}</div>
                           </div>
-                        </TableCell>
-                        <TableCell>
+                        </td>
+                        <td className="py-3 px-4">
                           <div className="text-sm">
                             <div>部门: {employee.targetDepartment}</div>
                             <div>路径: {employee.targetDepartmentPath}</div>
                             <div>岗位: {employee.targetPosition}</div>
                             <div>层级: {employee.targetLevel}</div>
                           </div>
-                        </TableCell>
-                        <TableCell>{employee.transferType}</TableCell>
-                        <TableCell>{employee.executionDate}</TableCell>
-                      </TableRow>
+                        </td>
+                        <td className="py-3 px-4">{employee.transferType}</td>
+                        <td className="py-3 px-4">
+                          <span className="data-highlight">{employee.executionDate}</span>
+                        </td>
+                      </tr>
                     ))}
-                  </TableBody>
-                </Table>
+                  </tbody>
+                </table>
               </div>
             </TabsContent>
             <TabsContent value="borrow" className="mt-4">
-              <div className="overflow-x-auto">
-                <Table>
-                  <TableHeader>
-                    <TableRow>
-                      <TableHead>姓名</TableHead>
-                      <TableHead>现状</TableHead>
-                      <TableHead>拟调情况</TableHead>
-                      <TableHead>调配类型</TableHead>
-                      <TableHead>执行时间</TableHead>
-                    </TableRow>
-                  </TableHeader>
-                  <TableBody>
+              <div className="overflow-x-auto custom-scrollbar">
+                <table className="w-full cyber-table">
+                  <thead>
+                    <tr>
+                      <th className="text-left py-3 px-4">姓名</th>
+                      <th className="text-left py-3 px-4">现状</th>
+                      <th className="text-left py-3 px-4">拟调情况</th>
+                      <th className="text-left py-3 px-4">调配类型</th>
+                      <th className="text-left py-3 px-4">执行时间</th>
+                    </tr>
+                  </thead>
+                  <tbody>
                     {borrowedEmployees.map((employee) => (
-                      <TableRow key={employee.id}>
-                        <TableCell className="font-medium">{employee.name}</TableCell>
-                        <TableCell>
+                      <tr key={employee.id}>
+                        <td className="py-3 px-4">
+                          <span className="data-highlight">{employee.name}</span>
+                        </td>
+                        <td className="py-3 px-4">
                           <div className="text-sm">
                             <div>部门: {employee.currentDepartment}</div>
                             <div>路径: {employee.departmentPath}</div>
                             <div>岗位: {employee.position}</div>
                             <div>层级: {employee.level}</div>
                           </div>
-                        </TableCell>
-                        <TableCell>
+                        </td>
+                        <td className="py-3 px-4">
                           <div className="text-sm">
                             <div>部门: {employee.targetDepartment}</div>
                             <div>路径: {employee.targetDepartmentPath}</div>
                             <div>岗位: {employee.targetPosition}</div>
                             <div>层级: {employee.targetLevel}</div>
                           </div>
-                        </TableCell>
-                        <TableCell>{employee.transferType}</TableCell>
-                        <TableCell>{employee.executionDate}</TableCell>
-                      </TableRow>
+                        </td>
+                        <td className="py-3 px-4">{employee.transferType}</td>
+                        <td className="py-3 px-4">
+                          <span className="data-highlight">{employee.executionDate}</span>
+                        </td>
+                      </tr>
                     ))}
-                  </TableBody>
-                </Table>
+                  </tbody>
+                </table>
               </div>
             </TabsContent>
           </Tabs>
-        </CardContent>
-      </Card>
-    </div>
+        </GlowCard>
+      </div>
+    </DashboardLayout>
   );
 };
 
