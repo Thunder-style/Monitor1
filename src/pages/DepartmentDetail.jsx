@@ -254,7 +254,7 @@ const DepartmentDetail = () => {
         <CardHeader>
           <CardTitle className="flex items-center">
             <Users className="mr-2 h-5 w-5" />
-            人员流动详情
+            人员流动 & 借调详情
           </CardTitle>
         </CardHeader>
         <CardContent>

@@ -98,7 +98,7 @@ const TalentFlowQuadrant = ({ selectedYear, onYearChange }) => {
   return (
     <Card className="w-full">
       <CardHeader className="flex flex-row items-center justify-between">
-        <CardTitle>人才流动分析</CardTitle>
+        <CardTitle>组织活力分析</CardTitle>
 <div></div>
       </CardHeader>
       <CardContent>
