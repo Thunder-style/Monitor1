@@ -351,8 +351,14 @@ const DepartmentGapAnalysis = () => {
     { id: 5, department: '财务部', onDuty: 12, onLoan: 0, vacant: 0, lentOut: 1, priority: '低' },
   ];
 
-  // 按空编数量排序（从高到低）
-  const sortedData = [...gapData].sort((a, b) => b.vacant - a.vacant);
+  // 计算空编率并按空编率排序（从高到低）
+  const dataWithVacancyRate = gapData.map(item => {
+    const totalPositions = item.onDuty + item.vacant;
+    const vacancyRate = totalPositions > 0 ? (item.vacant / totalPositions * 100).toFixed(1) : 0;
+    return { ...item, vacancyRate: parseFloat(vacancyRate) };
+  });
+  
+  const sortedData = [...dataWithVacancyRate].sort((a, b) => b.vacancyRate - a.vacancyRate);
 
   const getPriorityColor = (priority) => {
     switch (priority) {
@@ -376,8 +382,9 @@ const DepartmentGapAnalysis = () => {
                 <th className="text-left py-3 px-4 font-medium text-gray-600">单位名称</th>
                 <th className="text-center py-3 px-4 font-medium text-gray-600">在岗人数</th>
                 <th className="text-center py-3 px-4 font-medium text-gray-600">在借人数</th>
-                <th className="text-center py-3 px-4 font-medium text-gray-600">空编人数</th>
                 <th className="text-center py-3 px-4 font-medium text-gray-600">借出人数</th>
+                <th className="text-center py-3 px-4 font-medium text-gray-600">空编人数</th>
+                <th className="text-center py-3 px-4 font-medium text-gray-600">空编率</th>
                 <th className="text-center py-3 px-4 font-medium text-gray-600">缺口优先级</th>
               </tr>
             </thead>
@@ -387,8 +394,9 @@ const DepartmentGapAnalysis = () => {
                   <td className="py-3 px-4">{item.department}</td>
                   <td className="py-3 px-4 text-center">{item.onDuty}</td>
                   <td className="py-3 px-4 text-center">{item.onLoan}</td>
-                  <td className="py-3 px-4 text-center font-medium">{item.vacant}</td>
                   <td className="py-3 px-4 text-center">{item.lentOut}</td>
+                  <td className="py-3 px-4 text-center font-medium">{item.vacant}</td>
+                  <td className="py-3 px-4 text-center font-medium">{item.vacancyRate}%</td>
                   <td className="py-3 px-4">
                     <div className="flex justify-center">
                       <span className={`px-3 py-1 rounded-full text-xs ${getPriorityColor(item.priority)}`}>
